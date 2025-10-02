@@ -3,7 +3,7 @@ import "./Navbar.css"
 
 export default function Navbar(){
     return(
-        <div className="d-flex flex-column vh-100 border-end justify-content-between" style={{'width':'280px'}}>
+        <div className="d-flex flex-column vh-100 border-end justify-content-between" style={{'width':'280px',position:'sticky', top:0}}>
             <div>
                 <div className="p-3">
                     <img src="./Assets/instaharamLogo.png" className="mt-3 mb-2" style={{width:'115px'}}/>
