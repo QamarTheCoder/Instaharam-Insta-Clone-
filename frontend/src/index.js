@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Signup from './Signup/Signup';
+import Signin from './Signin/Signin';
+import Navbar from './dashboard/Navbar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Signup/>
+    <Navbar/>
 );
 
 // If you want to start measuring performance in your app, pass a function
