@@ -4,10 +4,26 @@ import './index.css';
 import Signup from './Signup/Signup';
 import Signin from './Signin/Signin';
 import Navbar from './dashboard/Navbar';
+import Feed from './dashboard/HomePage/Feed';
+import MainLayout from './dashboard/MainLayout';
+import {BrowserRouter,Routes,Route}from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Navbar/>
+    <BrowserRouter>
+        <Routes>
+
+            <Route path='/' element={
+                <MainLayout>
+                <Feed/>
+                </MainLayout>} />
+
+            
+            <Route path='/signin' element={<Signin/>} />
+            <Route path='/signup' element={<Signup/>} />
+        </Routes>
+    </BrowserRouter>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
