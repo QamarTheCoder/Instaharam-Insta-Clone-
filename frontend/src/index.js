@@ -7,6 +7,7 @@ import Navbar from './dashboard/Navbar';
 import Feed from './dashboard/HomePage/Feed';
 import MainLayout from './dashboard/MainLayout';
 import {BrowserRouter,Routes,Route}from 'react-router-dom'
+import ExplorePage from './dashboard/Explore/ExplorePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,11 @@ root.render(
             <Route path='/' element={
                 <MainLayout>
                 <Feed/>
+                </MainLayout>} />
+            
+             <Route path='/explore' element={
+                <MainLayout>
+                <ExplorePage/>
                 </MainLayout>} />
 
             

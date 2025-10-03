@@ -15,6 +15,13 @@ export const Posts=[{
     post:'./dummypic/pic3.jpg',
     likes:102023,
     comments:['nepotism', 'groomer', 'likes kids', 'ma na sehta']
-}
+},
+{
+    user:'karan johar',
+    post:'./dummypic/pic3.jpg',
+    likes:102023,
+    comments:['nepotism', 'groomer', 'likes kids', 'ma na sehta']
+},
+
 ]
 
