@@ -8,6 +8,8 @@ import Feed from './dashboard/HomePage/Feed';
 import MainLayout from './dashboard/MainLayout';
 import {BrowserRouter,Routes,Route}from 'react-router-dom'
 import ExplorePage from './dashboard/Explore/ExplorePage';
+import CreatePage from './dashboard/Create/CreatePage';
+import UserProfile from './dashboard/Profile/UserProfile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +25,18 @@ root.render(
                 <MainLayout>
                 <ExplorePage/>
                 </MainLayout>} />
+
+
+            <Route path='/Upload' element={
+                <MainLayout>
+                <CreatePage/>
+                </MainLayout>} />
+            
+              <Route path='/Profile' element={
+                <MainLayout>
+                <UserProfile/>
+                </MainLayout>} />
+
 
             
             <Route path='/signin' element={<Signin/>} />
