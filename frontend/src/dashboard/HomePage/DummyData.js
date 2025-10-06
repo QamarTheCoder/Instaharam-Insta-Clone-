@@ -2,7 +2,36 @@ export const Posts=[{
     user:'qamar123',
     post:'./dummypic/pic1.jpg',
     likes:4232,
-    comments:['Very nice', 'Very handsome', 'Nice pic bro', 'Good shit damn nice hahaha', 'Nah i like my pic better']
+    comments:[{
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            },
+        {
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            },
+        {
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            },
+        {
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            },
+        {
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            },
+        {
+                name:'qamar',
+                profile:'./dummypic/pic2.jpg',
+                comment:'Chawallll'
+            }]
 },
 {
     user:'saraalex',
@@ -35,7 +64,10 @@ export const Users=[
         post:[{
              post:'./dummypic/pic1.jpg',
             likes:4232,
-            comments:['Very nice', 'Very handsome', 'Nice pic bro', 'Good shit damn nice hahaha', 'Nah i like my pic better']
+            comments:[{
+                name:'qamar',
+                comment:'Chawallll'
+            }]
         },
         { post:'./dummypic/pic3.jpg',
             likes:102023,

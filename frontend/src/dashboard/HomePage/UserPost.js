@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function UserPost({username,post,likes,comments}){
     return(
-        <div className="container p-3" style={{width:'350px'}}>
+        <div className="container p-3" style={{width:'420px'}}>
             <div className="d-flex justify-content-between">
                 <p>{username}</p>
                 <p><i class="fa-solid fa-bars"></i></p>
             </div>
 
             <div>
-            <img src={post}  style={{ width: "320px",  aspectRatio: "9/16", objectFit: "cover", objectPosition: "center", borderRadius:'2px'}}/>
+            <img src={post}  style={{ width: "390px",  aspectRatio: "9/16", objectFit: "cover", objectPosition: "center", borderRadius:'2px'}}/>
             </div>
 
             <div className="d-flex mt-3 justify-content-between">
@@ -28,7 +29,7 @@ export default function UserPost({username,post,likes,comments}){
             <div>
                 <p style={{fontSize:'16px', fontWeight:'500'}}>{likes} likes</p>
 
-                <p style={{fontSize:'15px', fontWeight:'400' , color:'rgb(136, 135, 135)'}}>View all {comments.length} comments</p>
+                <Link to={'/viewpost'} style={{textDecoration:'none' , color:'gray'}}><p style={{fontSize:'15px', fontWeight:'400' , color:'rgb(136, 135, 135)'}}>View all {comments.length} comments</p></Link>
             </div>
 
         <hr/>

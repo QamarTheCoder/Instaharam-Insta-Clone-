@@ -10,6 +10,9 @@ import {BrowserRouter,Routes,Route}from 'react-router-dom'
 import ExplorePage from './dashboard/Explore/ExplorePage';
 import CreatePage from './dashboard/Create/CreatePage';
 import UserProfile from './dashboard/Profile/UserProfile';
+import Menu from './dashboard/Menu/Menu';
+import FullPostView from './dashboard/HomePage/FullPostView';
+import UploadPage from './dashboard/Create/UploadPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -37,7 +40,20 @@ root.render(
                 <UserProfile/>
                 </MainLayout>} />
 
+            <Route path='/Menu' element={
+                <MainLayout>
+                <Menu/>
+                </MainLayout>} />
 
+            <Route path='/viewpost' element={
+                <MainLayout>
+                <FullPostView/>
+                </MainLayout>} />
+
+                <Route path='/UploadPreview' element={
+                <MainLayout>
+                <UploadPage/>
+                </MainLayout>} />
             
             <Route path='/signin' element={<Signin/>} />
             <Route path='/signup' element={<Signup/>} />
