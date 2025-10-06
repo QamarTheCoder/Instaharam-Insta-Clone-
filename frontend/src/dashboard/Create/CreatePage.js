@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function CreatePage(){
     return(
@@ -7,6 +8,8 @@ export default function CreatePage(){
             <p className="fs-5">Upload Photos Here</p>
             <label for='fileUpload' className="btn" type="file" style={{border:'none', backgroundColor:'#4A5DF9' , color:'white', padding:'5px 15px', borderRadius:'8px'}}>Select From Computer</label>
             <input id="fileUpload" type="file" hidden /> 
+        <Link to={'/Uploadpreview'}>Link</Link>
+
         </div>
     )
 } 

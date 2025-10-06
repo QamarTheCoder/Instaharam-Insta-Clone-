@@ -25,7 +25,7 @@ export default function Navbar(){
         <div className="d-flex flex-column vh-100 border-end justify-content-between" style={{'width': isCollapsed ? '70px':'280px',position:'sticky', top:0,transition: "width 0.3s" }}>
             <div>
                 <div className="p-3">
-                    {isCollapsed ? <p className="mt-3 mb-2 fs-3"><i class="fa-brands fa-instagram"></i></p> : <img src="./Assets/instaharamLogo.png" className="mt-3 mb-2" style={{width:'115px'}}/>}
+                    <Link to={'/'} style={{textDecoration:'none', color:'black'}}>{isCollapsed ? <p className="mt-3 mb-2 fs-3"><i class="fa-brands fa-instagram"></i></p> : <img src="./Assets/instaharamLogo.png" className="mt-3 mb-2" style={{width:'115px'}}/>}</Link>
                 </div>
 
                 <div>
@@ -39,7 +39,7 @@ export default function Navbar(){
                 </div>
             </div>
             <div>
-            <p style={itemStyle} className="hover-box "><i class="fa-solid fa-bars fs-5"></i> {!isCollapsed && " Menu"}</p>
+            <Link to={'/Menu'} style={{textDecoration:'none', color:'black'}}> <p style={itemStyle} className="hover-box "><i class="fa-solid fa-bars fs-5"></i> {!isCollapsed && " Menu"}</p></Link>
             </div>
         {activePanel==="search" && <SearchUsers/>}
         {activePanel==="notifi" && <NotificationBar/>}
