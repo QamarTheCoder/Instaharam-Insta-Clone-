@@ -4,7 +4,10 @@ const passportLocalMongoose=require('passport-local-mongoose')
 
 const UserSchema= new Schema({
     email:{type:String,required:true, unique:true},
-    profile:String,
+    profile:{
+        type:String,
+        default:'https://www.mauicardiovascularsymposium.com/wp-content/uploads/2019/08/dummy-profile-pic-300x300.png'
+    },
     desc:String,
     followers:[{
         type:Schema.ObjectId,

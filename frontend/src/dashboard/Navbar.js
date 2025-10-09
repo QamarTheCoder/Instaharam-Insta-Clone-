@@ -15,14 +15,14 @@ export default function Navbar(){
     const isCollapsed=activePanel!==null
 
     const itemStyle = {
-        fontSize: isCollapsed ? "20px" : "16px",
-        padding: isCollapsed ? "12px" : "18px",
+        fontSize: isCollapsed ? "18px" : "16px",
+        padding: isCollapsed ? "10px 10px" : "12px 20px",
         textAlign: isCollapsed ? "center" : "left",
         transition: "all 0.2s ease"
     }
 
     return(
-        <div className="d-flex flex-column vh-100 border-end justify-content-between" style={{'width': isCollapsed ? '70px':'280px',position:'sticky', top:0,transition: "width 0.3s" }}>
+        <div className="d-flex flex-column vh-100 border-end justify-content-between" style={{'width': isCollapsed ? '70px':'280px',position:'sticky', top:0,transition: "width 0.3s" ,zIndex:1000}}>
             <div>
                 <div className="p-3">
                     <Link to={'/'} style={{textDecoration:'none', color:'black'}}>{isCollapsed ? <p className="mt-3 mb-2 fs-3"><i class="fa-brands fa-instagram"></i></p> : <img src="./Assets/instaharamLogo.png" className="mt-3 mb-2" style={{width:'115px'}}/>}</Link>

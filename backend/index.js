@@ -9,6 +9,8 @@ const PostModel=require('./Model/PostSchema')
 const CommentModel=require('./Model/CommentSchema')
 const passport=require('passport')
 const LocalStrategy=require('passport-local')
+const multer=require('multer')
+const upload=multer({dest:'uploads/'})
 const sessionOptions={
     secret:'mysupasceretkey',
     resave:false,
@@ -37,6 +39,16 @@ app.use(passport.session())
 passport.use(new LocalStrategy(UserModel.authenticate()))
 passport.serializeUser(UserModel.serializeUser())
 passport.deserializeUser(UserModel.deserializeUser())
+
+
+app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
+    let {desc}=req.body;
+    console.log("Image file:", req.file);
+    console.log("Description:", desc);
+    res.status(201).json({
+        success:true
+    })
+})
 
 
 app.post('/user/signupUser',async(req,res)=>{
@@ -82,6 +94,14 @@ app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect 
         })
         
         
+})
+
+app.post('/user/getUserData',(req,res)=>{
+    const current_user=req.user
+    console.log(current_user)
+    res.status(201).json({
+        user:current_user
+    })
 })
 
 app.post('/user/Logout',(req,res)=>{
