@@ -13,6 +13,7 @@ import UserProfile from './dashboard/Profile/UserProfile';
 import Menu from './dashboard/Menu/Menu';
 import FullPostView from './dashboard/HomePage/FullPostView';
 import UploadPage from './dashboard/Create/UploadPage';
+import ErrorElement from './Error/ErrorElement';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -57,6 +58,8 @@ root.render(
             
             <Route path='/signin' element={<Signin/>} />
             <Route path='/signup' element={<Signup/>} />
+
+            <Route path='/*' element={<ErrorElement/>} />
         </Routes>
     </BrowserRouter>
 

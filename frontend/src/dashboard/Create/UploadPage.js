@@ -1,9 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer,toast } from "react-toastify";
+import axios from "axios";
 
 export default function UploadPage(){
-    const img='./dummypic/pic2.jpg'
+
+    const location=useLocation();
+    const navigate= useNavigate();
+    const {file,previewURL}=location.state || {};
+    const [desc,Setdesc]=useState('')
+    const img=previewURL;
+
+    const handleUpload=(e)=>{
+        e.preventDefault();
+        const formData=new FormData();
+        formData.append('image',file)
+        formData.append('desc',desc)
+        axios.post("http://localhost:2020/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" }})
+        .then((res)=>{
+            if (res.data.success){
+                toast.success('Post Uploaded')
+                setTimeout(()=>{
+                    navigate('/')
+                },3000)
+            }
+        })
+        .catch((err)=>{
+            toast.error(err.message)
+        })
+
+    }
+
+
+
     return(
         <div className="vh-100 d-flex justify-content-center align-items-center">
+            <ToastContainer position="top-right" autoClose={3000} />
            <div>
             <img src={img}  style={{ width: "390px",  aspectRatio: "9/16", objectFit: "cover", objectPosition: "center", borderRadius:'2px'}}/>
             </div>
@@ -12,11 +44,11 @@ export default function UploadPage(){
                                 <p>qamar</p>
                             </div>
                         <div className="mt-2">
-                                <textarea placeholder="Write description" rows="3" cols="48"/>
+                                <textarea placeholder="Write description" rows="3" cols="48" value={desc} onChange={(e)=>{Setdesc(e.target.value)}}/>
 
                         </div>
                         <div className="d-flex align-items-end justify-content-end p-3" style={{width:"100%", height:'50%'}}>
-                            <button className="btn btn-primary" style={{'width':'100px',height:'50px'}}>Upload</button>
+                            <button className="btn btn-primary" style={{'width':'100px',height:'50px'}} onClick={(e)=>{handleUpload(e)}}>Upload</button>
                         </div>
             </div>
         </div>
