@@ -54,14 +54,23 @@ app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     let {desc}=req.body;
     console.log("Image file:", req.file);
     console.log("Description:", desc);
+    const User=await UserModel.findById(req.user._id);
     const newPost= new PostModel({
         user:req.user._id,
         post:{url:req.file.path, filename:req.file.filename},
     })
-    await newPost.save();
+    const NewPostsaved=await newPost.save();
+    User.Posts.push(NewPostsaved._id)
+    await User.save()
     res.status(201).json({
         success:true
     })
+})
+
+app.post('/user/SearchallUsers',async (req,res)=>{
+    const {searchedUser}=req.body;
+    const Users=await UserModel.find({username:searchedUser});
+    res.json({Users})
 })
 
 
@@ -111,7 +120,6 @@ app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect 
 })
 
 app.post('/user/:username',async(req,res)=>{
-    const current_user=req.user
     const {username}=req.params;
     const User= await UserModel.findOne({username:username}).populate('Posts')
     console.log(User)
@@ -122,11 +130,12 @@ app.post('/user/:username',async(req,res)=>{
 })
 
 
-app.get('/user/getUserData',(req,res)=>{
+app.get('/user/getUserData',async(req,res)=>{
     const current_user=req.user
+    const User= await UserModel.findById(current_user._id).populate('Posts')
     console.log(current_user)
     res.status(201).json({
-        user:current_user
+        user:User
     })
 })
 
