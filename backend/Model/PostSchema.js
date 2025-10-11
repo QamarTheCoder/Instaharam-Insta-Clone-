@@ -6,7 +6,7 @@ const PostSchema=new Schema({
         type:Schema.ObjectId,
         ref:'User'
     },
-    post:{type:String, required:true},
+    post:{url:String, filename:String },
     likes:[{
         type:Schema.ObjectId,
         ref:'User'
