@@ -16,7 +16,7 @@ export default function UploadPage(){
         const formData=new FormData();
         formData.append('image',file)
         formData.append('desc',desc)
-        axios.post("http://localhost:2020/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" }})
+        axios.post("http://localhost:2020/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" },withCredentials:true})
         .then((res)=>{
             if (res.data.success){
                 toast.success('Post Uploaded')
@@ -44,7 +44,7 @@ export default function UploadPage(){
                                 <p>qamar</p>
                             </div>
                         <div className="mt-2">
-                                <textarea placeholder="Write description" rows="3" cols="48" value={desc} onChange={(e)=>{Setdesc(e.target.value)}}/>
+                                <textarea placeholder="Write description" style={{resize:'none', height:'300px',width:'380px'}} value={desc} onChange={(e)=>{Setdesc(e.target.value)}}/>
 
                         </div>
                         <div className="d-flex align-items-end justify-content-end p-3" style={{width:"100%", height:'50%'}}>

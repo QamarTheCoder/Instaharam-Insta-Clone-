@@ -27,7 +27,7 @@ export default function UserPost({username,post,likes,comments}){
             </div>
 
             <div>
-                <p style={{fontSize:'16px', fontWeight:'500'}}>{likes} likes</p>
+                <p style={{fontSize:'16px', fontWeight:'500'}}>{likes.length} likes</p>
 
                 <Link to={'/viewpost'} style={{textDecoration:'none' , color:'gray'}}><p style={{fontSize:'15px', fontWeight:'400' , color:'rgb(136, 135, 135)'}}>View all {comments.length} comments</p></Link>
             </div>

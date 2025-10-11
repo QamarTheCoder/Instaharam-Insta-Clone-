@@ -41,6 +41,11 @@ root.render(
                 <UserProfile/>
                 </MainLayout>} />
 
+            <Route path='/user/:username' element={
+                <MainLayout>
+                <UserProfile/>
+            </MainLayout>} />
+
             <Route path='/Menu' element={
                 <MainLayout>
                 <Menu/>

@@ -10,7 +10,8 @@ const CommentModel=require('./Model/CommentSchema')
 const passport=require('passport')
 const LocalStrategy=require('passport-local')
 const multer=require('multer')
-const upload=multer({dest:'uploads/'})
+const {storage}=require('./CloudConfig.js')
+const upload=multer({storage})
 const sessionOptions={
     secret:'mysupasceretkey',
     resave:false,
@@ -41,10 +42,23 @@ passport.serializeUser(UserModel.serializeUser())
 passport.deserializeUser(UserModel.deserializeUser())
 
 
+app.post('/post/GetAllPosts',async(req,res)=>{
+    const AllPosts= await PostModel.find({}).populate('user')
+    console.log(AllPosts)
+    res.status(201).json({
+        Posts:AllPosts
+    })
+})
+
 app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     let {desc}=req.body;
     console.log("Image file:", req.file);
     console.log("Description:", desc);
+    const newPost= new PostModel({
+        user:req.user._id,
+        post:{url:req.file.path, filename:req.file.filename},
+    })
+    await newPost.save();
     res.status(201).json({
         success:true
     })
@@ -96,13 +110,26 @@ app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect 
         
 })
 
-app.post('/user/getUserData',(req,res)=>{
+app.post('/user/:username',async(req,res)=>{
+    const current_user=req.user
+    const {username}=req.params;
+    const User= await UserModel.findOne({username:username}).populate('Posts')
+    console.log(User)
+    // console.log(current_user)
+    res.status(201).json({
+        user:User
+    })
+})
+
+
+app.get('/user/getUserData',(req,res)=>{
     const current_user=req.user
     console.log(current_user)
     res.status(201).json({
         user:current_user
     })
 })
+
 
 app.post('/user/Logout',(req,res)=>{
     req.logOut((err)=>{
