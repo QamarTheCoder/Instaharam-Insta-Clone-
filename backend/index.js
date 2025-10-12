@@ -42,13 +42,38 @@ passport.serializeUser(UserModel.serializeUser())
 passport.deserializeUser(UserModel.deserializeUser())
 
 
-app.post('/post/GetAllPosts',async(req,res)=>{
-    const AllPosts= await PostModel.find({}).populate('user')
-    console.log(AllPosts)
-    res.status(201).json({
-        Posts:AllPosts
+app.post('/post/GetAllPosts', async (req, res) => {
+    const AllPosts = await PostModel.find({}).populate('user');
+    const userId = req.user ? req.user._id.toString() : null;
+
+    const formattedPosts = AllPosts.map(post => ({
+        ...post._doc,
+        isLiked: userId ? post.likes.some(likeId => likeId.toString() === userId) : false,
+    }));
+
+    res.status(201).json({ Posts: formattedPosts });
+});
+
+app.post('/post/Liked',async(req,res)=>{
+    let {username,post,isLiked}=req.body;
+    let ThePost= await PostModel.findOne({"post.url":post})
+
+   if (isLiked) {
+    if (!ThePost.likes.includes(req.user._id)) {
+      ThePost.likes.push(req.user._id);
+    }
+  } else {
+    ThePost.likes.pull(req.user._id);
+  }
+
+    await ThePost.save()
+    console.log(ThePost)
+    res.status(200).json({
+        success:true,
+        likesCount: ThePost.likes.length,
     })
 })
+
 
 app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     let {desc}=req.body;
@@ -140,7 +165,7 @@ app.get('/user/getUserData',async(req,res)=>{
 })
 
 
-app.post('/user/Logout',(req,res)=>{
+app.get('/user/Logout',(req,res)=>{
     req.logOut((err)=>{
         if (err){
         return next(err)
