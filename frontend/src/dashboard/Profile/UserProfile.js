@@ -8,7 +8,9 @@ import { useParams } from "react-router-dom";
 
 export default function UserProfile(){
     const[user,Setuser]=useState(null);
+    const [ownProfile,setOwnProfile]=useState(false);
     const {username}=useParams();
+    const [curruser,setcurruser]=useState(null)
 
    useEffect(()=>{
     if (username){
@@ -16,6 +18,8 @@ export default function UserProfile(){
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)
+        setOwnProfile(false)
+        setcurruser(res.data.curruser)
     })
     .catch((err)=>{
         toast.error(err)
@@ -26,6 +30,7 @@ export default function UserProfile(){
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)
+        setOwnProfile(true)
     })
     .catch((err)=>{
         toast.error(err)
@@ -38,7 +43,7 @@ export default function UserProfile(){
         <div className="vh-100 d-flex flex-column align-items-center mt-5 ">
             <ToastContainer position="top-right" autoClose={3000}/>
             <div>
-                <ProfileHeader user={user}/>
+                <ProfileHeader ownprofile={ownProfile} user={user} curruser={curruser} />
                 
             </div>
             <div className="w-50">

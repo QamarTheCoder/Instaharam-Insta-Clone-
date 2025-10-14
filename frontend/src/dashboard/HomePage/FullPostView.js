@@ -33,7 +33,7 @@ export default function FullPostView(){
     if (post===null){return null}
 
     return(
-        <div className="vh-100 d-flex justify-content-center align-items-center mt-5 mb-5">
+        <div className="vh-100 d-flex justify-content-center align-items-center ">
             <ToastContainer position="top-right" autoClose={3000}/>
            <div>
             <img src={post.post.url}  style={{ width: "390px",  aspectRatio: "9/16", objectFit: "cover", objectPosition: "center", borderRadius:'2px'}}/>
@@ -42,11 +42,11 @@ export default function FullPostView(){
                 <div className="border-bottom mb-2 mt-2">
                     <p>{post.user.username}</p>
                 </div>
-                <div className="mb-2 mt-2 p-2">
+                
+            <div  style={{flex: 1, overflowY: "auto",OverflowX:'hidden',marginBottom: "1px",}}>
+<div className="mb-2 mt-2 p-2">
                     <p>{post.desc}</p>
                 </div>
-            <div  style={{flex: 1, overflowY: "auto",OverflowX:'hidden',marginBottom: "1px",}}>
-
                 {post.comments.map((comment)=>(
 
                     <Comment user={comment.user.username} comment={comment.comment} profile={comment.user.profile} />
