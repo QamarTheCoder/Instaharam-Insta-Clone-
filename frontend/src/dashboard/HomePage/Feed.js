@@ -24,7 +24,7 @@ export default function Feed(){
         <>
         
        { Posts.map((post,key)=>(
-            <UserPost post={post.post.url} username={post.user.username} likes={post.likes} comments={post.comments} />
+            <UserPost post={post.post.url} username={post.user.username} likes={post.likes} comments={post.comments} isitLiked={post.isLiked ?? false} />
         ))} 
         </>
     )

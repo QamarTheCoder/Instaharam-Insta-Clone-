@@ -7,7 +7,7 @@ export default function Menu(){
     let navigate=useNavigate()
     const handleOnClick=(e)=>{
         e.preventDefault();
-        axios.post('http://localhost:2020/user/Logout',{},{withCredentials:true})
+        axios.get('http://localhost:2020/user/Logout',{withCredentials:true})
         .then((res)=>{
             if (res.data.success){
 
