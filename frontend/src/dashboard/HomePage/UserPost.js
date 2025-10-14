@@ -39,7 +39,7 @@ export default function UserPost({username,post,likes,comments,isitLiked}){
             <div className="d-flex mt-3 justify-content-between">
                 <div className="d-flex ">
                     <p onClick={handleIsLiked}><i style={{color: isLiked ? 'red' : 'black'}} className={`${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart fs-4`}></i></p> &nbsp; 
-                    <Link to={'/viewpost'} style={{textDecoration:'none' , color:'black'}}><p><i class="fa-regular fa-comment fs-4"></i></p></Link>&nbsp;
+                    <Link to={`/post/viewpost/${encodeURIComponent(post)}`} style={{textDecoration:'none' , color:'black'}}><p><i class="fa-regular fa-comment fs-4"></i></p></Link>&nbsp;
                     <p><i class="fa-regular fa-paper-plane fs-4"></i></p>
                 </div>
 
@@ -51,7 +51,7 @@ export default function UserPost({username,post,likes,comments,isitLiked}){
             <div>
                 <p style={{fontSize:'16px', fontWeight:'500'}}>{likesCount} likes</p>
 
-                <Link to={'/viewpost'} style={{textDecoration:'none' , color:'gray'}}><p style={{fontSize:'15px', fontWeight:'400' , color:'rgb(136, 135, 135)'}}>View all {comments.length} comments</p></Link>
+                <Link to={`/post/viewpost/${encodeURIComponent(post)}`} style={{textDecoration:'none' , color:'gray'}}><p style={{fontSize:'15px', fontWeight:'400' , color:'rgb(136, 135, 135)'}}>View all {comments.length} comments</p></Link>
             </div>
 
         <hr/>

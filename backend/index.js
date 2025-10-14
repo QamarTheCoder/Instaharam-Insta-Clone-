@@ -75,6 +75,31 @@ app.post('/post/Liked',async(req,res)=>{
 })
 
 
+app.post('/post/addComment',async(req,res)=>{
+    let {post,comment}=req.body;
+    const newComment= new CommentModel({
+        user:req.user._id,
+        comment:comment,
+    })
+    await newComment.save()
+    let ThePost= await PostModel.findOne({"post.url":post.post.url})
+    ThePost.comments.push(newComment._id)
+    await ThePost.save()
+    res.status(201).json({
+        success:true
+    })
+})
+
+app.get('/post/viewpost/:posturl',async(req,res)=>{
+    const decodedUrl = decodeURIComponent(req.params.posturl);
+    const Post=await PostModel.findOne({'post.url':decodedUrl}).populate({path:'comments',populate:{path:'user'}}).populate('user')
+    console.log(Post)
+    res.status(201).json({
+        Post
+    })
+})
+
+
 app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     let {desc}=req.body;
     console.log("Image file:", req.file);
@@ -83,6 +108,7 @@ app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     const newPost= new PostModel({
         user:req.user._id,
         post:{url:req.file.path, filename:req.file.filename},
+        desc:desc
     })
     const NewPostsaved=await newPost.save();
     User.Posts.push(NewPostsaved._id)
