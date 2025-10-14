@@ -46,12 +46,14 @@ root.render(
                 <UserProfile/>
             </MainLayout>} />
 
+
+
             <Route path='/Menu' element={
                 <MainLayout>
                 <Menu/>
                 </MainLayout>} />
 
-            <Route path='/viewpost' element={
+            <Route path='/post/viewpost/:posturl' element={
                 <MainLayout>
                 <FullPostView/>
                 </MainLayout>} />

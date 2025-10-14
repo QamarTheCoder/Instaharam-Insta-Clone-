@@ -9,7 +9,7 @@ export default function Comment({user,comment,profile}){
             <img src={profile} style={{width:'30px',height:'30px',borderRadius:'100%'}}/>
             <p className="d-inline" style={{paddingLeft:'10px', fontSize:'14px'}} ><b>{user}</b></p>
 
-            <p className="d-inline" style={{paddingLeft:'10px',  fontSize:'14px'}}>{comment}</p>
+            <p className="d-inline" style={{paddingLeft:'10px',  fontSize:'14px', wordBreak: "break-word", overflowWrap: "break-word" }} >{comment}</p>
             </span>
 
             
