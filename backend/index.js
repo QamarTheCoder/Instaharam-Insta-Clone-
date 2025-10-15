@@ -124,6 +124,50 @@ app.post('/user/SearchallUsers',async (req,res)=>{
     res.json({Users})
 })
 
+app.post('/user/followed', async (req, res) => {
+  try {
+    const { user } = req.body;
+    const followedUser = await UserModel.findOne({ username: user.username });
+    const currentUser = await UserModel.findById(req.user._id);
+
+    if (!followedUser.followers.includes(currentUser._id)) {
+      followedUser.followers.push(currentUser._id);
+    }
+
+    if (!currentUser.followings.includes(followedUser._id)) {
+      currentUser.followings.push(followedUser._id);
+    }
+
+    await followedUser.save();
+    await currentUser.save();
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/user/unfollow', async (req, res) => {
+  try {
+    const { user } = req.body;
+    const unfollowedUser = await UserModel.findOne({ username: user.username });
+    const currentUser = await UserModel.findById(req.user._id);
+
+    unfollowedUser.followers.pull(currentUser._id);
+    currentUser.followings.pull(unfollowedUser._id);
+
+    await unfollowedUser.save();
+    await currentUser.save();
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
 
 app.post('/user/signupUser',async(req,res)=>{
     try{
@@ -176,7 +220,8 @@ app.post('/user/:username',async(req,res)=>{
     console.log(User)
     // console.log(current_user)
     res.status(201).json({
-        user:User
+        user:User,
+        curruser:req.user
     })
 })
 
