@@ -14,6 +14,7 @@ import Menu from './dashboard/Menu/Menu';
 import FullPostView from './dashboard/HomePage/FullPostView';
 import UploadPage from './dashboard/Create/UploadPage';
 import ErrorElement from './Error/ErrorElement';
+import ProfileSettings from './dashboard/Profile/ProfileSettings';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,6 +45,11 @@ root.render(
             <Route path='/user/:username' element={
                 <MainLayout>
                 <UserProfile/>
+            </MainLayout>} />
+
+             <Route path='/user/settings' element={
+                <MainLayout>
+                <ProfileSettings/>
             </MainLayout>} />
 
 
