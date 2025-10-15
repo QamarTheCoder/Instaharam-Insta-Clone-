@@ -167,6 +167,12 @@ app.post('/user/unfollow', async (req, res) => {
   }
 });
 
+app.get('/user/settings', async (req, res) => {
+  const User=await UserModel({id:req.user._id})
+  res.json({
+    User
+  })
+});
 
 
 app.post('/user/signupUser',async(req,res)=>{
