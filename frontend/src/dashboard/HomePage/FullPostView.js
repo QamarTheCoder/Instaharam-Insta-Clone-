@@ -44,9 +44,12 @@ export default function FullPostView(){
                 </div>
                 
             <div  style={{flex: 1, overflowY: "auto",OverflowX:'hidden',marginBottom: "1px",}}>
+{post.desc &&
 <div className="mb-2 mt-2 p-2">
                     <p>{post.desc}</p>
                 </div>
+                }
+
                 {post.comments.map((comment)=>(
 
                     <Comment user={comment.user.username} comment={comment.comment} profile={comment.user.profile} />

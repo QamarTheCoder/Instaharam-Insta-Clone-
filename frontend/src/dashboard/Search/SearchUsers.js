@@ -43,12 +43,11 @@ export default function SearchUsers(){
         {displayedUser.map((user)=>(
           <Link to={`/user/${user.username}`} style={{color:'black', textDecoration:'none'}}>
             <div className="d-flex p-2 text-center align-items-center hover-box">
-              <img style={{height:'45px',width:'45px',borderRadius:'100%'}} src={user.profile}/>
+              <img style={{height:'45px',borderRadius:'100%',aspectRatio: "1/1", objectFit: "cover", objectPosition: "center",}} src={user.profile}/>
               <p className="fs-6 p-2" style={{fontWeight:500}}>{user.username}</p>
             </div>
             </Link>
         ))}
-        {/* Map through search results here */}
       </div>
     </div>
     )

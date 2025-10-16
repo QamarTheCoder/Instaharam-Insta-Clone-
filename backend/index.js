@@ -12,6 +12,7 @@ const LocalStrategy=require('passport-local')
 const multer=require('multer')
 const {storage}=require('./CloudConfig.js')
 const upload=multer({storage})
+const NotificationModel=require('./Model/NotificationSchema.js')
 const sessionOptions={
     secret:'mysupasceretkey',
     resave:false,
@@ -53,37 +54,80 @@ app.post('/post/GetAllPosts', async (req, res) => {
 
     res.status(201).json({ Posts: formattedPosts });
 });
-
-app.post('/post/Liked',async(req,res)=>{
-    let {username,post,isLiked}=req.body;
-    let ThePost= await PostModel.findOne({"post.url":post})
-
-   if (isLiked) {
-    if (!ThePost.likes.includes(req.user._id)) {
-      ThePost.likes.push(req.user._id);
+app.post('/post/Liked', async (req, res) => {
+  try {
+    const { post, isLiked } = req.body;
+    const ThePost = await PostModel.findOne({ "post.url": post }).populate('user');
+    if (!ThePost) {
+      return res.status(404).json({ success: false, message: "Post not found" });
     }
-  } else {
-    ThePost.likes.pull(req.user._id);
-  }
 
-    await ThePost.save()
-    console.log(ThePost)
+    const postOwnerId = ThePost.user._id;
+    const currentUserId = req.user._id;
+
+    if (postOwnerId.toString() === currentUserId.toString()) {
+      ThePost.likes = isLiked
+        ? [...new Set([...ThePost.likes, currentUserId])]
+        : ThePost.likes.filter(id => id.toString() !== currentUserId.toString());
+
+      await ThePost.save();
+      return res.status(200).json({ success: true, likesCount: ThePost.likes.length });
+    }
+
+    if (isLiked) {
+      if (!ThePost.likes.includes(currentUserId)) {
+        ThePost.likes.push(currentUserId);
+
+        const notification = new NotificationModel({
+          Notification: `${req.user.username} liked your post`,
+          User: postOwnerId
+        });
+        await notification.save();
+
+        const postOwner = await UserModel.findById(postOwnerId);
+        postOwner.Notifications.push(notification._id);
+        await postOwner.save();
+      }
+    } else {
+      ThePost.likes.pull(currentUserId);
+      await NotificationModel.findOneAndDelete({
+        Notification: `${req.user.username} liked your post`,
+        User: postOwnerId
+      });
+    }
+
+    await ThePost.save();
+
     res.status(200).json({
-        success:true,
-        likesCount: ThePost.likes.length,
-    })
-})
+      success: true,
+      likesCount: ThePost.likes.length
+    });
+  } catch (err) {
+    console.error("Error in /post/Liked:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 
 app.post('/post/addComment',async(req,res)=>{
     let {post,comment}=req.body;
+    const Notification= new NotificationModel({Notification:`${req.user.username} commented on your Post`,})
+
     const newComment= new CommentModel({
         user:req.user._id,
         comment:comment,
     })
     await newComment.save()
-    let ThePost= await PostModel.findOne({"post.url":post.post.url})
+    let ThePost= await PostModel.findOne({"post.url":post.post.url}).populate('user')
+    let TheUser= await UserModel.findById(ThePost.user._id)
     ThePost.comments.push(newComment._id)
+    Notification.User=ThePost.user._id
+    await Notification.save()
+
+    TheUser.Notifications.push(Notification._id)
+
+    await TheUser.save()
+
     await ThePost.save()
     res.status(201).json({
         success:true
@@ -112,6 +156,8 @@ app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     })
     const NewPostsaved=await newPost.save();
     User.Posts.push(NewPostsaved._id)
+
+
     await User.save()
     res.status(201).json({
         success:true
@@ -129,16 +175,19 @@ app.post('/user/followed', async (req, res) => {
     const { user } = req.body;
     const followedUser = await UserModel.findOne({ username: user.username });
     const currentUser = await UserModel.findById(req.user._id);
+    const Notification= new NotificationModel({Notification:`${currentUser.username} has started following you`,})
 
     if (!followedUser.followers.includes(currentUser._id)) {
       followedUser.followers.push(currentUser._id);
+      followedUser.Notifications.push(Notification._id);
     }
 
     if (!currentUser.followings.includes(followedUser._id)) {
       currentUser.followings.push(followedUser._id);
     }
-
+    Notification.User=followedUser._id
     await followedUser.save();
+    await Notification.save();
     await currentUser.save();
 
     res.status(201).json({ success: true });
@@ -154,8 +203,18 @@ app.post('/user/unfollow', async (req, res) => {
     const unfollowedUser = await UserModel.findOne({ username: user.username });
     const currentUser = await UserModel.findById(req.user._id);
 
+      const notificationToRemove = await NotificationModel.findOneAndDelete({
+      Notification: `${currentUser.username} started following you`,
+      User: unfollowedUser._id
+    });
+
+    if (notificationToRemove) {
+      unfollowedUser.Notifications.pull(notificationToRemove._id);
+    }
+
     unfollowedUser.followers.pull(currentUser._id);
     currentUser.followings.pull(unfollowedUser._id);
+
 
     await unfollowedUser.save();
     await currentUser.save();
@@ -167,8 +226,39 @@ app.post('/user/unfollow', async (req, res) => {
   }
 });
 
+app.post('/user/savedSettings', upload.single('profile'), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authenticated' });
+        }
+
+        const theUser = await UserModel.findById(req.user._id);
+        if (!theUser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        if (req.body.bio) {
+            theUser.desc = req.body.bio;
+        }
+
+        if (req.file) {
+            theUser.profile = req.file.path;
+            console.log('USER PROFILE NEW?',req.file)
+        }
+
+        await theUser.save();
+
+        res.status(201).json({ success: true, message: 'Profile updated successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
 app.get('/user/settings', async (req, res) => {
-  const User=await UserModel({id:req.user._id})
+  const User=await UserModel.findById(req.user._id)
   res.json({
     User
   })
@@ -228,6 +318,13 @@ app.post('/user/:username',async(req,res)=>{
     res.status(201).json({
         user:User,
         curruser:req.user
+    })
+})
+
+app.get('/user/Notification',async(req,res)=>{
+    const Notifications=await UserModel.findById(req.user._id).populate('Notifications')
+    res.status(201).json({
+        Notifications:Notifications.Notifications
     })
 })
 

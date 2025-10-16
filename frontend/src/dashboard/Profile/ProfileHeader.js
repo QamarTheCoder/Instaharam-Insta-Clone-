@@ -44,7 +44,7 @@ export default function ProfileHeader({user,ownprofile, curruser}){
     return(
         <div className="d-flex "> 
             <div style={{marginRight:'110px'}}>
-            <img src={user.profile} style={{width:'180px', height:'180px', borderRadius:'100%'}}/>
+            <img src={user.profile} style={{width:'180px',borderRadius:'100%',aspectRatio: "1/1", objectFit: "cover", objectPosition: "center",}}/>
             </div>
             <div className="d-flex flex-column ">
                 <div className="d-flex mb-2">

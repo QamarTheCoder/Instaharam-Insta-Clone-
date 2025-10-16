@@ -20,7 +20,8 @@ const UserSchema= new Schema({
     Posts:[{
         type:Schema.ObjectId,
         ref:'Post'
-    }]
+    }],
+    Notifications:[{type:Schema.ObjectId,ref:'Notification'}]
     
 })
 
