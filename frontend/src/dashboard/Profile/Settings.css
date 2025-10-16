@@ -1,0 +1,14 @@
+.edit{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+    
+}
+.hover-box:hover .edit{
+    opacity: 0.9;
+}
+.hover-box{
+    position: relative;
+}

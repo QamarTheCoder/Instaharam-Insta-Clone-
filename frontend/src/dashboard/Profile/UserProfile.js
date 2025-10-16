@@ -18,8 +18,12 @@ export default function UserProfile(){
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)
-        setOwnProfile(false)
         setcurruser(res.data.curruser)
+        if (username===res.data.curruser.username){
+            setOwnProfile(true)
+        }else{
+            setOwnProfile(false)
+        }
     })
     .catch((err)=>{
         toast.error(err)

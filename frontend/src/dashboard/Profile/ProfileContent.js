@@ -1,5 +1,6 @@
 import React from "react";
 import ExploreComponenet from "../Explore/ExploreComponent";
+import { Link } from "react-router-dom";
 export default function ProfileContent({user}){
     if (!user) return null;
 
@@ -9,7 +10,9 @@ export default function ProfileContent({user}){
            
             {
             user.Posts.map((post)=>(
+                <Link to={`/post/viewpost/${encodeURIComponent(post.post.url)}`}>
                 <ExploreComponenet post={post}/>
+                </Link>
             ))}
 
 
