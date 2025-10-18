@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from 'axios'
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import {ToastContainer,toast} from 'react-toastify'
 
 
-export default function UserPost({username,post,likes,comments,isitLiked}){
+export default function UserPost({username,post,likes,comments,isitLiked,currUser,profile}){
     const [isLiked,setIsLiked]=useState(isitLiked);
     const [likesCount, setLikesCount] = useState(likes.length);
+    let navigate=useNavigate()
 
     const handleIsLiked = async () => {
     try {
@@ -28,20 +30,29 @@ export default function UserPost({username,post,likes,comments,isitLiked}){
 
   const handledelete=(e)=>{
     e.preventDefault()
-    console.log('Helo')
+    axios.post('http://localhost:2020/post/deletePost',{username,post},{withCredentials:true})
+    .then((res)=>{
+      if (res.data.success){
+        toast.success('Post deleted')
+        setTimeout(() => {
+          navigate('/')
+        }, 1500);
+      }
+    })
   }
     return(
         <div className="container p-3" style={{width:'420px'}}>
+          <ToastContainer position="top-right" autoClose={3000}/>
             <div className="d-flex justify-content-between">
-                <p>{username}</p>
+                <Link to={`/user/${username}`} style={{textDecoration:'none', color:'black'}}><p><img src={profile} style={{height:'39px',borderRadius:'100%',aspectRatio: "1/1", objectFit: "cover", objectPosition: "center",}} /> &nbsp; {username}</p></Link>
+                {currUser.username===username &&
                 <div class="btn-group dropend">
-                {/* <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> */}
                   <p  data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-bars"></i></p>
-                {/* </button> */}
                 <ul class="dropdown-menu">
                   <li onClick={(e)=>{handledelete(e)}}>Delete Post</li>
                 </ul>
-              </div>
+              </div> }
+                
                 
             </div>
 

@@ -7,11 +7,13 @@ import { useState } from "react";
 // import { Posts } from "./DummyData";
 export default function Feed(){
     const [Posts,setPosts]=useState(null)
+    const [curruser,setCurruser]=useState(null)
     useEffect(()=>{
         axios.post('http://localhost:2020/post/GetAllPosts',{},{withCredentials:true})
         .then((res)=>{
             console.log("Fetched posts:", res.data.Posts);
             setPosts(res.data.Posts)
+            setCurruser(res.data.currentUser)
         })
     },[])
     // Posts.map((post)=>{
@@ -24,7 +26,7 @@ export default function Feed(){
         <>
         
        { Posts.map((post,key)=>(
-            <UserPost post={post.post.url} username={post.user.username} likes={post.likes} comments={post.comments} isitLiked={post.isLiked ?? false} />
+            <UserPost post={post.post.url} username={post.user.username} likes={post.likes} comments={post.comments} isitLiked={post.isLiked ?? false} currUser={curruser} profile={post.user.profile}  />
         ))} 
         </>
     )
