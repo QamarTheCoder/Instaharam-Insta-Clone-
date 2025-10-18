@@ -52,7 +52,7 @@ app.post('/post/GetAllPosts', async (req, res) => {
         isLiked: userId ? post.likes.some(likeId => likeId.toString() === userId) : false,
     }));
 
-    res.status(201).json({ Posts: formattedPosts });
+    res.status(201).json({ Posts: formattedPosts ,currentUser:req.user});
 });
 app.post('/post/Liked', async (req, res) => {
   try {
@@ -108,6 +108,13 @@ app.post('/post/Liked', async (req, res) => {
   }
 });
 
+app.post('/post/deletePost',async(req,res)=>{
+  let {username,post}=req.body
+  let deletedPost=await PostModel.findOneAndDelete({'post.url':post})
+  res.status(201).json({
+    success:true
+  })
+})
 
 app.post('/post/addComment',async(req,res)=>{
     let {post,comment}=req.body;
@@ -322,7 +329,7 @@ app.post('/user/:username',async(req,res)=>{
 })
 
 app.get('/user/Notification',async(req,res)=>{
-    const Notifications=await UserModel.findById(req.user._id).populate('Notifications')
+    const Notifications=await UserModel.findById(req.user._id).populate({path:'Notifications',options:{sort:{createdAt:-1}}} )
     res.status(201).json({
         Notifications:Notifications.Notifications
     })
@@ -352,6 +359,56 @@ app.get('/user/Logout',(req,res)=>{
             })
         })
     })
+})
+
+app.get('/user/Deleteaccount',async(req,res)=>{
+  const userId = req.user._id;
+
+    await UserModel.updateMany(
+      { followers: userId },
+      { $pull: { followers: userId } }
+    );
+
+    await UserModel.updateMany(
+      { followings: userId },
+      { $pull: { followings: userId } }
+    );
+
+      await PostModel.updateMany(
+      { likes: userId },
+      { $pull: { likes: userId } }
+    );
+    const userComments = await CommentModel.find({ user: userId });
+    const commentIds = userComments.map(c => c._id);
+    if (commentIds.length > 0) {
+      await PostModel.updateMany(
+        { comments: { $in: commentIds } },
+        { $pull: { comments: { $in: commentIds } } }
+      );
+
+      await CommentModel.deleteMany({ _id: { $in: commentIds } });
+    }
+    await PostModel.deleteMany({ user: userId });
+    
+    await NotificationModel.deleteMany({ User: userId });
+
+     const user = await UserModel.findById(userId);
+    if (user) {
+      await NotificationModel.deleteMany({
+        Notification: { $regex: user.username, $options: 'i' }
+      });
+    }
+
+    await UserModel.findByIdAndDelete(userId);
+
+    req.logOut(() => {
+      req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.status(201).json({
+          success: true,
+        });
+      });
+    });
 })
 
 app.listen(PORT, ()=>{
