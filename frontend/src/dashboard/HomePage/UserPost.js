@@ -25,11 +25,24 @@ export default function UserPost({username,post,likes,comments,isitLiked}){
       console.error(err);
     }
   };
+
+  const handledelete=(e)=>{
+    e.preventDefault()
+    console.log('Helo')
+  }
     return(
         <div className="container p-3" style={{width:'420px'}}>
             <div className="d-flex justify-content-between">
                 <p>{username}</p>
-                <p><i class="fa-solid fa-bars"></i></p>
+                <div class="btn-group dropend">
+                {/* <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> */}
+                  <p  data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-bars"></i></p>
+                {/* </button> */}
+                <ul class="dropdown-menu">
+                  <li onClick={(e)=>{handledelete(e)}}>Delete Post</li>
+                </ul>
+              </div>
+                
             </div>
 
             <div>
