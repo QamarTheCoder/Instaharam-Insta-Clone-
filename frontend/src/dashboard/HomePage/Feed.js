@@ -16,7 +16,7 @@ export default function Feed(){
     useEffect(()=>{
         const fetch=async()=>{
         try{
-        const res= await axios.post('https://instaharam-insta-clone.onrender.com/post/GetAllPosts',{},{withCredentials:true})
+        const res= await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post/GetAllPosts`,{},{withCredentials:true})
         if (res){
             console.log("Fetched posts:", res.data.Posts);
             setPosts(res.data.Posts)

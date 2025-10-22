@@ -10,7 +10,7 @@ function SigninForm(){
     const navigate = useNavigate()
     const handleSubmit=(e)=>{
         e.preventDefault();
-        axios.post('https://instaharam-insta-clone.onrender.com/user/login',{username,password},{withCredentials:true})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/login`,{username,password},{withCredentials:true})
         .then((res)=>{
             if (res.data.success){
                 toast.success('User Logged In Successfully')

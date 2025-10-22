@@ -14,7 +14,7 @@ export default function UserProfile(){
 
    useEffect(()=>{
     if (username){
-        axios.post(`https://instaharam-insta-clone.onrender.com/user/${username}`,{},{withCredentials:true})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/${username}`,{},{withCredentials:true})
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)

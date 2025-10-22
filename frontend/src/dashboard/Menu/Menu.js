@@ -7,7 +7,7 @@ export default function Menu(){
     let navigate=useNavigate()
     const handleOnClick=(e)=>{
         e.preventDefault();
-        axios.get('https://instaharam-insta-clone.onrender.com/user/Logout',{withCredentials:true})
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/Logout`,{withCredentials:true})
         .then((res)=>{
             if (res.data.success){
 
@@ -22,7 +22,7 @@ export default function Menu(){
 
     const handleDelete=(e)=>{
         e.preventDefault();
-        axios.get('http://localhost:2020/user/Deleteaccount',{withCredentials:true})
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/Deleteaccount`,{withCredentials:true})
         .then((res)=>{
             if(res.data.success){
                 toast.success('Account deleted successfully')

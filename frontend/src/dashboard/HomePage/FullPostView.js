@@ -10,7 +10,7 @@ export default function FullPostView(){
     const navigate=useNavigate()
     const {posturl}=useParams();
     const fetchPost=()=>{
-        axios.get(`https://instaharam-insta-clone.onrender.com/post/viewpost/${encodeURIComponent(posturl)}`,{withCredentials:true})
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/post/viewpost/${encodeURIComponent(posturl)}`,{withCredentials:true})
         .then((res)=>{
             console.log(res.data.Post)
             setPost(res.data.Post)
