@@ -15,6 +15,8 @@ import FullPostView from './dashboard/HomePage/FullPostView';
 import UploadPage from './dashboard/Create/UploadPage';
 import ErrorElement from './Error/ErrorElement';
 import ProfileSettings from './dashboard/Profile/ProfileSettings';
+import { ToastContainer } from 'react-toastify';
+import ProtectedRoute from './ProtectedRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,58 +24,84 @@ root.render(
         <Routes>
 
             <Route path='/' element={
+                <ProtectedRoute>
                 <MainLayout>
                 <Feed/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
             
              <Route path='/explore' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <ExplorePage/>
-                </MainLayout>} />
+                </MainLayout>
+            </ProtectedRoute>} />
 
 
             <Route path='/Upload' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <CreatePage/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
             
               <Route path='/Profile' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <UserProfile/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
 
             <Route path='/user/:username' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <UserProfile/>
-            </MainLayout>} />
+            </MainLayout>
+            </ProtectedRoute>} />
 
              <Route path='/user/settings' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <ProfileSettings/>
-            </MainLayout>} />
+            </MainLayout>
+            </ProtectedRoute>} />
 
 
 
             <Route path='/Menu' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <Menu/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
 
             <Route path='/post/viewpost/:posturl' element={
+                <ProtectedRoute>
+
                 <MainLayout>
                 <FullPostView/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
 
                 <Route path='/UploadPreview' element={
+                <ProtectedRoute>
                 <MainLayout>
                 <UploadPage/>
-                </MainLayout>} />
+                </MainLayout>
+                </ProtectedRoute>} />
             
             <Route path='/signin' element={<Signin/>} />
             <Route path='/signup' element={<Signup/>} />
 
             <Route path='/*' element={<ErrorElement/>} />
         </Routes>
+        {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </BrowserRouter>
 
 );

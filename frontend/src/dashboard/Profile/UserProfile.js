@@ -14,7 +14,7 @@ export default function UserProfile(){
 
    useEffect(()=>{
     if (username){
-        axios.post(`http://localhost:2020/user/${username}`,{},{withCredentials:true})
+        axios.post(`https://instaharam-insta-clone.onrender.com/user/${username}`,{},{withCredentials:true})
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)
@@ -30,7 +30,7 @@ export default function UserProfile(){
     })
     }else{
         
-    axios.get('http://localhost:2020/user/getUserData',{withCredentials:true})
+    axios.get('https://instaharam-insta-clone.onrender.com/user/getUserData',{withCredentials:true})
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)

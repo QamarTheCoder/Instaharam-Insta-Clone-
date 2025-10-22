@@ -15,7 +15,7 @@ export default function UserPost({username,post,likes,comments,isitLiked,currUse
       setIsLiked(newLiked);
 
       const res = await axios.post(
-        "http://localhost:2020/post/Liked",
+        "https://instaharam-insta-clone.onrender.com/post/Liked",
         { username, post, isLiked: newLiked },
         { withCredentials: true }
       );

@@ -8,7 +8,7 @@ export default function NotificationBar() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:2020/user/Notification", { withCredentials: true })
+      .get("https://instaharam-insta-clone.onrender.com/user/Notification", { withCredentials: true })
       .then((res) => {
         setNotifications(res.data.Notifications || []);
       })

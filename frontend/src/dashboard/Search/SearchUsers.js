@@ -17,7 +17,7 @@ export default function SearchUsers(){
     const fetchUsers = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:2020/user/SearchallUsers",
+          "https://instaharam-insta-clone.onrender.com/user/SearchallUsers",
           { searchedUser },
           { withCredentials: true }
         );

@@ -13,7 +13,7 @@ export default function ProfileSettings(){
     const [bio,Setbio]=useState('')
     let navigate=useNavigate()
     useEffect(()=>{
-        axios.get('http://localhost:2020/user/settings',{withCredentials:true})
+        axios.get('https://instaharam-insta-clone.onrender.com/user/settings',{withCredentials:true})
         .then((res)=>{
             Setuser(res.data.User)
             Setuserprofile(res.data.User.profile)
@@ -38,7 +38,7 @@ export default function ProfileSettings(){
     if (profile) formData.append('profile', profile);
 
     axios.post(
-      'http://localhost:2020/user/savedSettings',
+      'https://instaharam-insta-clone.onrender.com/user/savedSettings',
       formData,
       {
         withCredentials: true,
