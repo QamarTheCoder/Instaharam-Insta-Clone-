@@ -24,14 +24,14 @@ export default function ProfileHeader({user,ownprofile, curruser}){
     const handleClick=(e)=>{
             e.preventDefault()
             if (!followed){
-            axios.post('https://instaharam-insta-clone.onrender.com/user/followed',{user},{withCredentials:true})
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/followed`,{user},{withCredentials:true})
             .then((res)=>{
                 if(res.data.success){
                     Setfollowed(true)
                 }
             })
         }else{
-            axios.post('https://instaharam-insta-clone.onrender.com/user/unfollow',{user},{withCredentials:true})
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/unfollow`,{user},{withCredentials:true})
             .then((res)=>{
                 if(res.data.success){
                     Setfollowed(false)

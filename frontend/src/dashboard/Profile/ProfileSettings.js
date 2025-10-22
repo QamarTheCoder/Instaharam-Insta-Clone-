@@ -13,7 +13,7 @@ export default function ProfileSettings(){
     const [bio,Setbio]=useState('')
     let navigate=useNavigate()
     useEffect(()=>{
-        axios.get('https://instaharam-insta-clone.onrender.com/user/settings',{withCredentials:true})
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/settings`,{withCredentials:true})
         .then((res)=>{
             Setuser(res.data.User)
             Setuserprofile(res.data.User.profile)

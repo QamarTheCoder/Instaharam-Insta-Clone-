@@ -17,7 +17,7 @@ export default function UploadPage(){
         const formData=new FormData();
         formData.append('image',file)
         formData.append('desc',desc)
-        axios.post("https://instaharam-insta-clone.onrender.com/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" },withCredentials:true})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/post/PostImg`, formData, {headers: { "Content-Type": "multipart/form-data" },withCredentials:true})
         .then((res)=>{
             if (res.data.success){
                 toast.success('Post Uploaded')

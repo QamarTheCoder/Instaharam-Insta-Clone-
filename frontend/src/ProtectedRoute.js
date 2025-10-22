@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("https://instaharam-insta-clone.onrender.com/user/getUserData", { withCredentials: true });
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/getUserData`, { withCredentials: true });
         if (res.data.user) {
           setIsLoggedIn(true);
         }

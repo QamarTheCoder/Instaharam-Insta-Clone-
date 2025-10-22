@@ -15,7 +15,7 @@ export default function UserPost({username,post,likes,comments,isitLiked,currUse
       setIsLiked(newLiked);
 
       const res = await axios.post(
-        "https://instaharam-insta-clone.onrender.com/post/Liked",
+        `${process.env.REACT_APP_BACKEND_URL}/post/Liked`,
         { username, post, isLiked: newLiked },
         { withCredentials: true }
       );
@@ -30,7 +30,7 @@ export default function UserPost({username,post,likes,comments,isitLiked,currUse
 
   const handledelete=(e)=>{
     e.preventDefault()
-    axios.post('http://localhost:2020/post/deletePost',{username,post},{withCredentials:true})
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/post/deletePost`,{username,post},{withCredentials:true})
     .then((res)=>{
       if (res.data.success){
         toast.success('Post deleted')
