@@ -14,7 +14,6 @@ const {storage}=require('./CloudConfig.js')
 const upload=multer({storage})
 const NotificationModel=require('./Model/NotificationSchema.js')
 const wrapAsync=require('./wrapAsync.js')
-app.set('trust proxy', 1);
 const sessionOptions = {
   secret: 'mysupasceretkey',
   resave: false,
@@ -29,6 +28,8 @@ const sessionOptions = {
 };
 
 const app=express()
+app.set('trust proxy', 1);
+
 const PORT= process.env.PORT || 2020;
 const MONGO_URL=process.env.MONGO_URL
 
