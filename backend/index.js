@@ -37,7 +37,7 @@ const MONGO_URL=process.env.MONGO_URL
 
 app.use(cors({ origin: [
     "http://localhost:3000", 
-    `${process.env.FRONTEND_URL}`
+    `https://instaharam-insta-clone-1.onrender.com`
   ], credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
