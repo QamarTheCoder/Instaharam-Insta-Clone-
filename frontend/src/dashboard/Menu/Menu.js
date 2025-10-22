@@ -7,7 +7,7 @@ export default function Menu(){
     let navigate=useNavigate()
     const handleOnClick=(e)=>{
         e.preventDefault();
-        axios.get('http://localhost:2020/user/Logout',{withCredentials:true})
+        axios.get('https://instaharam-insta-clone.onrender.com/user/Logout',{withCredentials:true})
         .then((res)=>{
             if (res.data.success){
 

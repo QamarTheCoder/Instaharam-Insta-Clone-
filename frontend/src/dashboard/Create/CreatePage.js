@@ -1,17 +1,21 @@
 import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 export default function CreatePage(){
     const navigate=useNavigate()
     const handleOnchange=(e)=>{
+        try{
         e.preventDefault()
         const imageData=e.target.files[0]
         
         if (imageData){
             const previewURL=URL.createObjectURL(imageData)
             navigate('/Uploadpreview',{state:{file:imageData,previewURL}})
+        }}catch(err){
+            toast.error('Something went wrong')
         }
     }
     return(

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function ExplorePage(){
     const [Posts,setPosts]=useState([])
     useEffect(()=>{
-        axios.post("http://localhost:2020/post/GetAllPosts",{},{withCredentials:true})
+        axios.post("https://instaharam-insta-clone.onrender.com/post/GetAllPosts",{},{withCredentials:true})
         .then((res)=>{
             setPosts(res.data.Posts)
         })

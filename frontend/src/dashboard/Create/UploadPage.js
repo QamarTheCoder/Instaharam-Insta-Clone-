@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer,toast } from "react-toastify";
 import axios from "axios";
 
+
 export default function UploadPage(){
 
     const location=useLocation();
@@ -16,7 +17,7 @@ export default function UploadPage(){
         const formData=new FormData();
         formData.append('image',file)
         formData.append('desc',desc)
-        axios.post("http://localhost:2020/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" },withCredentials:true})
+        axios.post("https://instaharam-insta-clone.onrender.com/post/PostImg", formData, {headers: { "Content-Type": "multipart/form-data" },withCredentials:true})
         .then((res)=>{
             if (res.data.success){
                 toast.success('Post Uploaded')
