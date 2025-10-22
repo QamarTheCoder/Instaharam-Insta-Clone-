@@ -14,10 +14,12 @@ const {storage}=require('./CloudConfig.js')
 const upload=multer({storage})
 const NotificationModel=require('./Model/NotificationSchema.js')
 const wrapAsync=require('./wrapAsync.js')
+const MongoStore = require('connect-mongo');
 const sessionOptions = {
   secret: 'mysupasceretkey',
   resave: false,
   saveUninitialized: false,
+  store:MongoStore.create({mongoUrl:process.env.MONGO_URL}),
   cookie: {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     maxAge: 7 * 24 * 60 * 60 * 1000,
