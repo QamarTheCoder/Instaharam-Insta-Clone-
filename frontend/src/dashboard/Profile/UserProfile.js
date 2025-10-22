@@ -30,7 +30,7 @@ export default function UserProfile(){
     })
     }else{
         
-    axios.get('https://instaharam-insta-clone.onrender.com/user/getUserData',{withCredentials:true})
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/getUserData`,{withCredentials:true})
     .then((res)=>{
         console.log(res.data.user)
         Setuser(res.data.user)

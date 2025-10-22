@@ -21,7 +21,7 @@ export default function FullPostView(){
     },[])
     const handleSubmit=(e)=>{
         e.preventDefault();
-        axios.post('http://localhost:2020/post/addComment',{post,comment},{withCredentials:true})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/post/addComment`,{post,comment},{withCredentials:true})
         .then((res)=>{
             if (res.data.success){
                 toast.success('Comment was added')

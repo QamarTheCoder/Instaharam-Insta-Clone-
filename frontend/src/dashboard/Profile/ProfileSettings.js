@@ -38,7 +38,7 @@ export default function ProfileSettings(){
     if (profile) formData.append('profile', profile);
 
     axios.post(
-      'https://instaharam-insta-clone.onrender.com/user/savedSettings',
+      `${process.env.REACT_APP_BACKEND_URL}/user/savedSettings`,
       formData,
       {
         withCredentials: true,
