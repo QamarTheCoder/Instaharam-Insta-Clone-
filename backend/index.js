@@ -22,7 +22,9 @@ const sessionOptions={
         expires:Date.now() +7  * 24  * 60 * 60 *1000,
         maxAge:7  * 24  * 60 * 60 *1000,
         httpOnly:true
-    }
+    },
+    sameSite:'none',
+    secure:true
 }
 
 
@@ -32,7 +34,10 @@ const MONGO_URL=process.env.MONGO_URL
 
 
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }))
+app.use(cors({ origin: [
+    "http://localhost:3000", 
+    "https://instaharam-frontend.onrender.com"
+  ], credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
