@@ -13,6 +13,7 @@ const multer=require('multer')
 const {storage}=require('./CloudConfig.js')
 const upload=multer({storage})
 const NotificationModel=require('./Model/NotificationSchema.js')
+const wrapAsync=require('./wrapAsync.js')
 const sessionOptions={
     secret:'mysupasceretkey',
     resave:false,
@@ -43,7 +44,10 @@ passport.serializeUser(UserModel.serializeUser())
 passport.deserializeUser(UserModel.deserializeUser())
 
 
-app.post('/post/GetAllPosts', async (req, res) => {
+app.post('/post/GetAllPosts', wrapAsync(async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const AllPosts = await PostModel.find({}).populate('user');
     const userId = req.user ? req.user._id.toString() : null;
 
@@ -53,8 +57,11 @@ app.post('/post/GetAllPosts', async (req, res) => {
     }));
 
     res.status(201).json({ Posts: formattedPosts ,currentUser:req.user});
-});
-app.post('/post/Liked', async (req, res) => {
+}));
+app.post('/post/Liked',wrapAsync( async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
   try {
     const { post, isLiked } = req.body;
     const ThePost = await PostModel.findOne({ "post.url": post }).populate('user');
@@ -106,17 +113,23 @@ app.post('/post/Liked', async (req, res) => {
     console.error("Error in /post/Liked:", err);
     res.status(500).json({ success: false, message: err.message });
   }
-});
+}));
 
-app.post('/post/deletePost',async(req,res)=>{
+app.post('/post/deletePost',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
   let {username,post}=req.body
   let deletedPost=await PostModel.findOneAndDelete({'post.url':post})
   res.status(201).json({
     success:true
   })
-})
+}))
 
-app.post('/post/addComment',async(req,res)=>{
+app.post('/post/addComment',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     let {post,comment}=req.body;
     const Notification= new NotificationModel({Notification:`${req.user.username} commented on your Post`,})
 
@@ -139,19 +152,25 @@ app.post('/post/addComment',async(req,res)=>{
     res.status(201).json({
         success:true
     })
-})
+}))
 
-app.get('/post/viewpost/:posturl',async(req,res)=>{
+app.get('/post/viewpost/:posturl',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const decodedUrl = decodeURIComponent(req.params.posturl);
     const Post=await PostModel.findOne({'post.url':decodedUrl}).populate({path:'comments',populate:{path:'user'}}).populate('user')
     console.log(Post)
     res.status(201).json({
         Post
     })
-})
+}))
 
 
-app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
+app.post('/post/PostImg',upload.single('image'),wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     let {desc}=req.body;
     console.log("Image file:", req.file);
     console.log("Description:", desc);
@@ -169,15 +188,21 @@ app.post('/post/PostImg',upload.single('image'),async(req,res)=>{
     res.status(201).json({
         success:true
     })
-})
+}))
 
-app.post('/user/SearchallUsers',async (req,res)=>{
+app.post('/user/SearchallUsers',wrapAsync(async (req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const {searchedUser}=req.body;
     const Users=await UserModel.find({username:searchedUser});
     res.json({Users})
-})
+}))
 
-app.post('/user/followed', async (req, res) => {
+app.post('/user/followed', wrapAsync(async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
   try {
     const { user } = req.body;
     const followedUser = await UserModel.findOne({ username: user.username });
@@ -202,9 +227,12 @@ app.post('/user/followed', async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
-});
+}));
 
-app.post('/user/unfollow', async (req, res) => {
+app.post('/user/unfollow', wrapAsync(async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
   try {
     const { user } = req.body;
     const unfollowedUser = await UserModel.findOne({ username: user.username });
@@ -231,9 +259,12 @@ app.post('/user/unfollow', async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
-});
+}));
 
-app.post('/user/savedSettings', upload.single('profile'), async (req, res) => {
+app.post('/user/savedSettings', upload.single('profile'), wrapAsync( async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     try {
         if (!req.user) {
             return res.status(401).json({ success: false, message: 'Not authenticated' });
@@ -261,18 +292,21 @@ app.post('/user/savedSettings', upload.single('profile'), async (req, res) => {
         console.error(error);
         res.status(500).json({ success: false, message: error.message });
     }
-});
+}));
 
 
-app.get('/user/settings', async (req, res) => {
+app.get('/user/settings', wrapAsync( async (req, res) => {
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
   const User=await UserModel.findById(req.user._id)
   res.json({
     User
   })
-});
+}));
 
 
-app.post('/user/signupUser',async(req,res)=>{
+app.post('/user/signupUser',wrapAsync(async(req,res)=>{
     try{
     const {email,username,password}=req.body;
     const User= new UserModel({
@@ -304,9 +338,9 @@ app.post('/user/signupUser',async(req,res)=>{
             message: e.message
         })
     }
-})
+}))
 
-app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect Credentials'}),async(req,res)=>{
+app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect Credentials'}),wrapAsync(async(req,res)=>{
   
         console.log(` CURRENT USER FROM COOkIE${req.user}`)
         res.status(201).json({
@@ -315,9 +349,12 @@ app.post('/user/login',passport.authenticate("local",{failureMessage:'Incorrect 
         })
         
         
-})
+}))
 
-app.post('/user/:username',async(req,res)=>{
+app.post('/user/:username',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const {username}=req.params;
     const User= await UserModel.findOne({username:username}).populate('Posts')
     console.log(User)
@@ -326,24 +363,30 @@ app.post('/user/:username',async(req,res)=>{
         user:User,
         curruser:req.user
     })
-})
+}))
 
-app.get('/user/Notification',async(req,res)=>{
+app.get('/user/Notification',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const Notifications=await UserModel.findById(req.user._id).populate({path:'Notifications',options:{sort:{createdAt:-1}}} )
     res.status(201).json({
         Notifications:Notifications.Notifications
     })
-})
+}))
 
 
-app.get('/user/getUserData',async(req,res)=>{
+app.get('/user/getUserData',wrapAsync(async(req,res)=>{
+  if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
     const current_user=req.user
     const User= await UserModel.findById(current_user._id).populate('Posts')
     console.log(current_user)
     res.status(201).json({
         user:User
     })
-})
+}))
 
 
 app.get('/user/Logout',(req,res)=>{
@@ -409,6 +452,11 @@ app.get('/user/Deleteaccount',async(req,res)=>{
         });
       });
     });
+})
+
+app.use((err,req,res,next)=>{
+  console.log(err)
+  next()
 })
 
 app.listen(PORT, ()=>{

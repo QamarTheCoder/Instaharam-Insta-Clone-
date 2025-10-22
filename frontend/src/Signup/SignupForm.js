@@ -13,7 +13,7 @@ export default function SignupForm(){
     const navigate=useNavigate()
     const handleSubmit =(e)=>{
         e.preventDefault()
-        axios.post('http://localhost:2020/user/signupUser',{
+        axios.post('https://instaharam-insta-clone.onrender.com/user/signupUser',{
             email:email,
             username:username,
             password:password
