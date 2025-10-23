@@ -8,7 +8,7 @@ const UserSchema= new Schema({
         type:String,
         default:'https://www.mauicardiovascularsymposium.com/wp-content/uploads/2019/08/dummy-profile-pic-300x300.png'
     },
-    desc:String,
+    desc:{type:String, maxLength:96, default:'',},
     followers:[{
         type:Schema.ObjectId,
         ref:'User'
