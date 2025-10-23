@@ -75,13 +75,21 @@ export default function ProfileSettings(){
                 </label>
                 </div>
 
-                <textarea value={bio} maxLength={96} onChange={(e)=>{Setbio(e.target.value)}} placeholder={user.desc || 'write your bio'} style={{resize:'none', width:'400px',height:'150px'}}/>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <textarea
+                    value={bio}
+                    maxLength={96}
+                    onChange={(e) => Setbio(e.target.value)}
+                    placeholder={user.desc || "write your bio"}
+                    style={{ resize: "none", width: "400px", height: "150px" }}
+                />
                 <small
-                className="text-muted mt-1"
-                style={{ alignSelf: "flex-start", fontSize: "13px" }}
+                    className="text-muted mt-1"
+                    style={{ fontSize: "13px", alignSelf: "flex-end" }}
                 >
-                {bio.length} / 96 characters
+                    {bio.length} / 96 characters
                 </small>
+                </div>
                 <button className="mt-3 " style={{border:'none', backgroundColor:'#4A5DF9' , color:'white', padding:'5px 15px', borderRadius:'8px'}} onClick={(e)=>{handleChanges(e)}}>Save Changes</button>
 
             </div>
