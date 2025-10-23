@@ -61,7 +61,7 @@ export default function ProfileHeader({user,ownprofile, curruser}){
                      <b style={{fontSize:'17px'}}>{user.followings.length}</b>  &nbsp; <p style={{fontSize:'17px'}} className="text-muted"> Followings</p>
                 </div>
                  <div>
-                <p>{user.desc}</p>
+                <p style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>{user.desc}</p>
             </div>
 
             </div>
